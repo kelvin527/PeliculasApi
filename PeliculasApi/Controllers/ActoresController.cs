@@ -38,14 +38,14 @@ namespace PeliculasApi.Controllers
         }
 
         [HttpPost(Name ="agregarActor")]
-        public async Task<ActionResult> Post(AgregarActorDto agregarActor)
+        public async Task<ActionResult> Post([FromForm]AgregarActorDto agregarActor)
         {
             var verificar = await context.Actors.Where(x => x.Nombre == agregarActor.Nombre).AnyAsync();
             if (verificar) { return NotFound("este nombe ya existe");}
 
             var actormap= mapper.Map<Actor>(agregarActor);
             context.Actors.Add(actormap);
-            await context.SaveChangesAsync();
+            //await context.SaveChangesAsync();
 
             var dto = mapper.Map<ActorDto>(actormap);
 
@@ -53,7 +53,7 @@ namespace PeliculasApi.Controllers
         }
 
         [HttpPut("{id:int}", Name ="actulizarActor")]
-        public async Task<ActionResult> Put(int id, AgregarActorDto agregarActor)
+        public async Task<ActionResult> Put([FromForm] int id, AgregarActorDto agregarActor)
         {
             var verificar= await context.Actors.AnyAsync(x=> x.Id==id);
             if(!verificar) { return NotFound(); }
